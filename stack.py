@@ -36,3 +36,4 @@ if __name__ == "__main__":
     myStack.pop()
     print myStack.top()
     myStack.pop()
+
