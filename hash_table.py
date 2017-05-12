@@ -12,6 +12,8 @@ class Hash_table:
     #handles only strings and ints, for the time being
     def hash(self, value):
         
+        if np.isnan(value):
+            return
         #if number of elements in table is greater than half of table, resize
         if sum(~np.isnan(self.elements)) > (self.elements.size / 2):
             self.resize()
@@ -48,17 +50,20 @@ class Hash_table:
         
     
     def resize(self):
-        
+        print "resizing"
         #make new stack, with doubled size
         new_elements = np.empty(2*self.elements.size)
         new_elements[:] = np.NAN
+        old_stuff = self.elements
+        self.elements = new_elements
         
         #choose new prime for hash fn
         self.prime_key = self.find_next_prime(self.prime_key + 1)
         
         #rehash
-        for elem in self.elements:
-            hash(elem)
+        for elem in old_stuff:
+            if not np.isnan(elem):
+                self.hash(int(elem))
       
     
     
@@ -74,3 +79,19 @@ class Hash_table:
             else:
                 return p
         return None
+    
+if __name__ == "__main__":
+    a = Hash_table()
+    a.hash(0)
+    a.hash(5)
+    a.hash(6)
+    a.hash(13)
+    a.hash(20)
+    a.hash(49)
+    print a.elements
+
+    a.hash(50)
+    a.hash(51)
+
+
+    print a.elements
